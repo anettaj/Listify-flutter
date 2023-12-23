@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo/Components/ActionButton.dart';
 import 'package:todo/Components/Splash_title.dart';
-import 'package:todo/Pages/Splash_two.dart';
+import 'package:todo/Pages/Home.dart';
 
-class SplashOne extends StatelessWidget {
-  const SplashOne({super.key});
+class Splash_two extends StatelessWidget {
+  const Splash_two({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +18,9 @@ class SplashOne extends StatelessWidget {
             child: Stack(
               alignment: AlignmentDirectional.bottomCenter,
               children: [
+                Positioned(
+                    bottom: H * 0.46,
+                    child: Image.asset('assets/Splash_two.png')),
                 Container(
                   decoration: const BoxDecoration(
                       boxShadow: [
@@ -37,12 +40,9 @@ class SplashOne extends StatelessWidget {
                           topRight: Radius.circular(50))),
                   height: H / 2,
                 ),
-                Positioned(
-                    bottom: H * 0.35,
-                    child: Image.asset('assets/Splash_one.png')),
                 Splash_title(
                   H: H,
-                  title: "Organize Your Day \nwith Listify",
+                  title: "Long Press to \nDelete Task",
                 ),
               ],
             ),
@@ -50,7 +50,7 @@ class SplashOne extends StatelessWidget {
         ],
       ),
       floatingActionButton: ActionButton(
-        Link: Splash_two(),
+        Link: Home(),
       ),
     );
   }
