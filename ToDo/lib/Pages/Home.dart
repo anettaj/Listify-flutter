@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:todo/Models/Task.dart';
 
 class Home extends StatefulWidget {
@@ -11,13 +10,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late double _deviceHeight;
   String? _newTaskContent;
   Box? _box;
+  String? val;
+  TextEditingController? _textEditingController;
 
   @override
   void initState() {
     super.initState();
+    _textEditingController = TextEditingController();
     _openBox();
   }
 
@@ -29,29 +30,30 @@ class _HomeState extends State<Home> {
       }
     } catch (e) {
       print('Error opening Hive box: $e');
-      // Handle the error as needed
     }
   }
 
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
   @override
   void dispose() {
+    _textEditingController!.dispose();
     Hive.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
+    double H = MediaQuery.of(context).size.height;
 
-    // Check if _box is still null, and show a loading indicator if it is
     if (_box == null) {
       return Scaffold(
         appBar: AppBar(
-          toolbarHeight: _deviceHeight * 0.12,
+          toolbarHeight: H * 0.109,
           title: const Text(
-            'ToDo',
+            'Listify',
             style: TextStyle(
               fontSize: 25,
+              fontFamily: 'Dela Gothic One',
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -62,15 +64,23 @@ class _HomeState extends State<Home> {
       );
     }
 
-    // Continue with the rest of the build method
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: _deviceHeight * 0.12,
+        toolbarHeight: H * 0.109,
         title: const Text(
-          'ToDo',
+          'Listify',
           style: TextStyle(
             fontSize: 25,
             color: Colors.white,
+            fontFamily: 'Dela Gothic One',
+            letterSpacing: 2,
+            shadows: [
+              Shadow(
+                color: Colors.black,
+                blurRadius: 2.0,
+                offset: Offset(2.0, 2.0),
+              ),
+            ],
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -101,58 +111,69 @@ class _HomeState extends State<Home> {
       itemCount: tasks.length,
       itemBuilder: (BuildContext _context, int _index) {
         var task = Task.fromMap(tasks[_index]);
-        return ListTile(
-          title: Text(
-            task.content,
-            style: TextStyle(
-              fontSize: 20,
-              decoration: task.done ? TextDecoration.lineThrough : null,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+        return Container(
+          padding: EdgeInsets.all(5),
+          margin: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 18,
+          ),
+          decoration: const BoxDecoration(
+              color: Color(0xFFFFF5DA),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            title: Text(
+              capitalize(task.content),
+              style: TextStyle(
+                fontSize: 23,
+                fontFamily: 'Days one',
+                decoration: task.done ? TextDecoration.lineThrough : null,
+                color: Colors.black,
+              ),
             ),
+            trailing: task.done
+                ? const Icon(
+                    Icons.check_box_outlined,
+                    color: Color(0xFFC35959),
+                    size: 26,
+                  )
+                : const Icon(
+                    Icons.check_box_outline_blank_outlined,
+                    color: Color(0xFFC35959),
+                    size: 26,
+                  ),
+            subtitle: Text(
+              task.timestamp.toString(),
+              style: TextStyle(fontSize: 15),
+            ),
+            onTap: () {
+              setState(() {
+                task.done = !task.done;
+                _box!.putAt(_index, task.toMap());
+              });
+            },
+            onLongPress: () {
+              setState(() {
+                _box!.deleteAt(_index);
+              });
+            },
           ),
-          trailing: task.done
-              ? Icon(
-                  Icons.check_box_outlined,
-                  color: Color.fromARGB(255, 228, 30, 89),
-                  size: 25,
-                )
-              : Icon(
-                  Icons.check_box_outline_blank_outlined,
-                  color: Color.fromARGB(255, 228, 30, 89),
-                  size: 25,
-                ),
-          subtitle: Text(
-            task.timestamp.toString(),
-            style: TextStyle(fontSize: 15),
-          ),
-          onTap: () {
-            setState(() {
-              task.done = !task.done;
-              _box!.putAt(_index, task.toMap());
-            });
-          },
-          onLongPress: () {
-            setState(() {
-              _box!.deleteAt(_index);
-            });
-          },
         );
       },
     );
   }
 
   Widget _emptyTaskList() {
-    return Center(
+    return const Center(
       child: Text('No tasks available.'),
     );
   }
 
   Widget _addTaskButton() {
     return FloatingActionButton(
-      backgroundColor: Color.fromARGB(255, 228, 30, 89),
+      backgroundColor: Color(0xFFC35959),
       onPressed: _displayTaskPopup,
-      child: Icon(
+      child: const Icon(
         Icons.add,
         color: Colors.white,
       ),
@@ -160,34 +181,110 @@ class _HomeState extends State<Home> {
   }
 
   void _displayTaskPopup() {
+    double H = MediaQuery.of(context).size.height;
     showDialog(
       context: context,
       builder: (BuildContext _context) {
         return AlertDialog(
-          title: const Text("Add New Task!"),
-          content: TextField(
-            onSubmitted: (_value) {
-              if (_value.isNotEmpty) {
-                var _task = Task(
-                  content: _value,
-                  done: false,
-                  timestamp: DateTime.now(),
-                );
-                _box!.add(_task.toMap());
-                setState(() {
-                  _newTaskContent = null;
-                  Navigator.pop(context);
-                });
-              }
-            },
-            onChanged: (_value) {
-              setState(() {
-                _newTaskContent = _value;
-              });
-            },
+          backgroundColor: Color(0xFFC35959),
+          title: const Center(
+            child: Text(
+              'Add Task',
+              style: TextStyle(
+                fontSize: 30,
+                color: Color(0xFFFFF5DA),
+                fontFamily: 'Dela Gothic One',
+              ),
+            ),
+          ),
+          titlePadding: EdgeInsets.only(top: 40, right: 10),
+          content: Container(
+            height: H * 0.15,
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    color: Color(0xFFFFF5DA),
+                  ),
+                  child: TextField(
+                    controller: _textEditingController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _textEditingController!.clear();
+                          _newTaskContent = null;
+                          Navigator.pop(context);
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFFF5DA),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: Color(0xFFC35959),
+                          fontFamily: 'Dela Gothic One',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        String value = _textEditingController!.text.trim();
+                        if (value.isNotEmpty) {
+                          var _task = Task(
+                            content: value,
+                            done: false,
+                            timestamp: DateTime.now(),
+                          );
+                          _box!.add(_task.toMap());
+                          setState(() {
+                            _textEditingController!.clear();
+                            Navigator.pop(context);
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFFF5DA),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Enter",
+                        style: TextStyle(
+                          color: Color(0xFFC35959),
+                          fontFamily: 'Dela Gothic One',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
-    );
+    ).then((value) => {_textEditingController!.clear()});
   }
 }
