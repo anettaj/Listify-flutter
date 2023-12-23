@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Models/Task.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -146,7 +147,7 @@ class _HomeState extends State<Home> {
                     size: 26,
                   ),
             subtitle: Text(
-              task.timestamp.toString(),
+              '${task.time.toString()}',
               style: TextStyle(fontSize: 15),
             ),
             onTap: () {
@@ -266,13 +267,38 @@ class _HomeState extends State<Home> {
                       width: 8,
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         String value = _textEditingController!.text.trim();
+
+                        // Get the current date
+                        DateTime currentDate = DateTime.now();
+
+                        // Format the current date as "dd/MM/yyyy"
+                        String formattedDate =
+                            DateFormat("dd/MM/yyyy").format(currentDate);
+
+                        // Set the current time
+                        TimeOfDay currentTime = TimeOfDay.now();
+
+                        // Create a DateTime object with the current date and selected time
+                        DateTime selectedDateTime = DateTime(
+                          currentDate.year,
+                          currentDate.month,
+                          currentDate.day,
+                          currentTime.hour,
+                          currentTime.minute,
+                        );
+
+                        // Format the selected date and time
+                        String formattedDateTime =
+                            DateFormat("dd/MM/yyyy h:mm a")
+                                .format(selectedDateTime);
+
                         if (value.isNotEmpty) {
                           var _task = Task(
                             content: value,
                             done: false,
-                            timestamp: DateTime.now(),
+                            time: formattedDateTime,
                           );
                           _box!.add(_task.toMap());
                           setState(() {

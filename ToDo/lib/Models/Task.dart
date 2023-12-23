@@ -1,18 +1,16 @@
 class Task {
   String content;
-  DateTime timestamp;
+  var time;
   bool done;
 
-  Task({required this.content, required this.done, required this.timestamp});
+  Task({required this.content, required this.done, required this.time});
 
   factory Task.fromMap(Map task) {
     return Task(
-        content: task["content"],
-        timestamp: task["timestamp"],
-        done: task["done"]);
+        content: task["content"], time: task["time"], done: task["done"]);
   }
 
   Map toMap() {
-    return {"content": content, "timestamp": timestamp, "done": done};
+    return {"content": content, "time": time, "done": done};
   }
 }
