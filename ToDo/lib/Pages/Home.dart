@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Models/Task.dart';
 
 class Home extends StatefulWidget {
@@ -31,6 +32,8 @@ class _HomeState extends State<Home> {
     } catch (e) {
       print('Error opening Hive box: $e');
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = (await prefs.setBool('isFirstLaunch', false));
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
@@ -199,11 +202,25 @@ class _HomeState extends State<Home> {
           ),
           titlePadding: EdgeInsets.only(top: 40, right: 10),
           content: Container(
-            height: H * 0.15,
+            height: H * 0.18,
             child: Column(
               children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Enter the task here:',
+                      style: TextStyle(
+                        fontFamily: 'Dekko',
+                        color: Color(0xFFFFF5DA),
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
-                  margin: const EdgeInsets.all(10),
+                  margin:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),

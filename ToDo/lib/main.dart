@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Pages/Home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:todo/Pages/Splash_one.dart';
 
 void main() async {
   await Hive.initFlutter("hive_boxes");
   await _openBox();
-  runApp(MyApp());
+  bool isFirstLaunch = await _initializeData();
+  runApp(MyApp(
+    isFirst: isFirstLaunch,
+  ));
+}
+
+Future<bool> _initializeData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isFirstLaunch') ?? true;
+  // Use the isFirstLaunch value as needed
 }
 
 Future<void> _openBox() async {
@@ -16,25 +27,27 @@ Future<void> _openBox() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-
+  const MyApp({Key? key, required this.isFirst});
+  final bool isFirst;
   @override
   Widget build(BuildContext context) {
+    print("isFirst:$isFirst");
     return MaterialApp(
-      title: 'ToDo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          elevation: 10.0,
-          shadowColor: Color.fromARGB(255, 243, 72, 143),
-          color: Color.fromARGB(255, 228, 30, 89),
+        title: 'Listify',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            elevation: 10.0,
+            shadowColor: Color(0xFFC35959),
+            color: Color(0xFFC35959),
+          ),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color(0xFFC35959),
+          ),
+          useMaterial3: true,
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromARGB(255, 228, 30, 89),
-        ),
-        useMaterial3: true,
-      ),
-      home: Home(),
-    );
+        home: isFirst ? SplashOne() : Home()
+        // Home(),
+        );
   }
 }

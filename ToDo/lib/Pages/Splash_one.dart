@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Components/ActionButton.dart';
 import 'package:todo/Components/Splash_title.dart';
 import 'package:todo/Pages/Splash_two.dart';
 
-class SplashOne extends StatelessWidget {
+class SplashOne extends StatefulWidget {
   const SplashOne({super.key});
+
+  @override
+  State<SplashOne> createState() => _SplashOneState();
+}
+
+class _SplashOneState extends State<SplashOne> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
