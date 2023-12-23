@@ -82,8 +82,10 @@ flutter:
     - family: Days one
       fonts:
         - asset: assets\Fonts\DaysOne-Regular.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+
+    - family: Dekko
+      fonts:
+        - asset: assets\Fonts\Dekko-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
