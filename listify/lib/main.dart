@@ -6,18 +6,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:todo/Pages/Splash_one.dart';
 
 void main() async {
-  await Hive.initFlutter("hive_boxes");
-  await _openBox();
-  bool isFirstLaunch = await _initializeData();
-  runApp(MyApp(
-    isFirst: isFirstLaunch,
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Hive.initFlutter("hive_boxes");
+    await _openBox();
+    bool isFirstLaunch = await _initializeData();
+
+    runApp(MyApp(isFirst: isFirstLaunch));
+  } catch (e) {
+    print('Error initializing app: $e');
+  }
 }
 
 Future<bool> _initializeData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getBool('isFirstLaunch') ?? true;
-  // Use the isFirstLaunch value as needed
 }
 
 Future<void> _openBox() async {
@@ -27,27 +31,27 @@ Future<void> _openBox() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.isFirst});
+  const MyApp({Key? key, required this.isFirst}) : super(key: key);
+
   final bool isFirst;
+
   @override
   Widget build(BuildContext context) {
-    print("isFirst:$isFirst");
     return MaterialApp(
-        title: 'Listify',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            elevation: 10.0,
-            shadowColor: Color(0xFFC35959),
-            color: Color(0xFFC35959),
-          ),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xFFC35959),
-          ),
-          useMaterial3: true,
+      title: 'Listify',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          elevation: 10.0,
+          shadowColor: Color(0xFFC35959),
+          color: Color(0xFFC35959),
         ),
-        home: isFirst ? SplashOne() : Home()
-        // Home(),
-        );
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFFC35959),
+        ),
+        useMaterial3: true,
+      ),
+      home: isFirst ? const SplashOne() : const Home(),
+    );
   }
 }

@@ -12,7 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? _newTaskContent;
   Box? _box;
   String? val;
   TextEditingController? _textEditingController;
@@ -51,48 +50,42 @@ class _HomeState extends State<Home> {
 
     if (_box == null) {
       return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: H * 0.109,
-          title: const Text(
-            'Listify',
-            style: TextStyle(
-              fontSize: 25,
-              fontFamily: 'Dela Gothic One',
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        appBar: _appbar(H),
         body: _loadingIndicator(),
         floatingActionButton: _addTaskButton(),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: H * 0.109,
-        title: const Text(
-          'Listify',
-          style: TextStyle(
-            fontSize: 25,
-            color: Colors.white,
-            fontFamily: 'Dela Gothic One',
-            letterSpacing: 2,
-            shadows: [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 2.0,
-                offset: Offset(2.0, 2.0),
-              ),
-            ],
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: _appbar(H),
       body: _taskList(),
       floatingActionButton: _addTaskButton(),
     );
   }
+
+  PreferredSizeWidget _appbar(double H){
+    return AppBar(
+      toolbarHeight: H * 0.109,
+      title: const Text(
+        'Listify',
+        style: TextStyle(
+          fontSize: 25,
+          color: Colors.white,
+          fontFamily: 'Dela Gothic One',
+          letterSpacing: 2,
+          shadows: [
+            Shadow(
+              color: Colors.black,
+              blurRadius: 2.0,
+              offset: Offset(2.0, 2.0),
+            ),
+          ],
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
 
   Widget _loadingIndicator() {
     return Container(
@@ -213,7 +206,7 @@ class _HomeState extends State<Home> {
                     child: Text(
                       'Enter the task here:',
                       style: TextStyle(
-                        fontFamily: 'Dekko',
+                        fontFamily: 'Days one',
                         color: Color(0xFFFFF5DA),
                       ),
                     ),
@@ -245,7 +238,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         setState(() {
                           _textEditingController!.clear();
-                          _newTaskContent = null;
+
                           Navigator.pop(context);
                         });
                       },

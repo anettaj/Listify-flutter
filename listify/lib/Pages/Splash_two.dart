@@ -4,6 +4,8 @@ import 'package:todo/Components/ActionButton.dart';
 import 'package:todo/Components/Splash_title.dart';
 import 'package:todo/Pages/Home.dart';
 
+import '../Components/Splash_container.dart';
+
 class Splash_two extends StatefulWidget {
   const Splash_two({Key? key});
 
@@ -33,25 +35,7 @@ class _Splash_twoState extends State<Splash_two> {
                   Positioned(
                       bottom: H * 0.46,
                       child: Image.asset('assets/Splash_two.png')),
-                  Container(
-                    decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            offset: Offset(
-                              1.0,
-                              6.0,
-                            ),
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        color: Color(0xFFFCFDFF),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50))),
-                    height: H / 2,
-                  ),
+                  Splash_container(H: H),
                   Splash_title(
                     H: H,
                     title: "Long Press to \nDelete Task",
@@ -77,3 +61,4 @@ class _Splash_twoState extends State<Splash_two> {
         ));
   }
 }
+

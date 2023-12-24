@@ -85,9 +85,7 @@ flutter:
       fonts:
         - asset: assets\Fonts\DaysOne-Regular.ttf
 
-    - family: Dekko
-      fonts:
-        - asset: assets\Fonts\Dekko-Regular.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
