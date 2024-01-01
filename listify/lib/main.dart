@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/Pages/Home.dart';
+import 'package:listify/Pages/Home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:todo/Pages/Splash_one.dart';
+import 'package:listify/Pages/Splash_one.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

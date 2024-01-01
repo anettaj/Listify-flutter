@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo/Components/ActionButton.dart';
-import 'package:todo/Components/Splash_title.dart';
-import 'package:todo/Pages/Splash_two.dart';
+import 'package:listify/Components/ActionButton.dart';
+import 'package:listify/Components/Splash_title.dart';
+import 'package:listify/Pages/Splash_two.dart';
 
 import '../Components/Splash_container.dart';
 

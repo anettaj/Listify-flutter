@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/Models/Task.dart';
+import 'package:listify/Models/Task.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/Components/ActionButton.dart';
-import 'package:todo/Components/Splash_title.dart';
-import 'package:todo/Pages/Home.dart';
+import 'package:listify/Components/ActionButton.dart';
+import 'package:listify/Components/Splash_title.dart';
+import 'package:listify/Pages/Home.dart';
 
 import '../Components/Splash_container.dart';
 

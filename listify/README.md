@@ -1,8 +1,7 @@
-# Listify
-
 Task manager
 
 ## Getting Started
+## listify
 
 This project is a starting point for a Flutter application.
 
