@@ -243,7 +243,7 @@ class _HomeState extends State<Home> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFFF5DA),
+                        backgroundColor: Color(0xFFFFF5DA),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -301,7 +301,7 @@ class _HomeState extends State<Home> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFFF5DA),
+                        backgroundColor: Color(0xFFFFF5DA),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
